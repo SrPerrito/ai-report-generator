@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Report Generator | Enterprise Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <base target="_blank">
+</head>
+
+<body>
+    <canvas id="particle-canvas"></canvas>
+    <div class="aurora-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="noise-overlay"></div>
+
+    <div class="content-layer">
+        <nav class="navbar">
+            <a href="#" class="logo">
+                <div class="logo-icon"><i class="fas fa-brain"></i></div>
+                <div class="logo-text">
+                    <div class="logo-brand">AI<span>REPORT</span></div>
+                    <div class="logo-tagline">Enterprise Intelligence</div>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="#" class="nav-link">Documentation</a>
+                <div class="user-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Enterprise</span>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container">
+            <section id="upload-section" class="upload-section fade-in">
+                <div class="hero">
+                    <div class="hero-badge">
+                        <div class="pulse-dot"></div>
+                        <span>AI-Powered Analytics</span>
+                    </div>
+                    <h1>
+                        <span class="hero-title-line">Transform Data</span>
+                        <span class="hero-title-line text-gradient">into Intelligence</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        Upload your CSV or Excel files and let our advanced AI generate
+                        <span class="highlight">executive reports</span> with actionable insights in seconds.
+                    </p>
+                </div>
+
+                <div class="upload-card">
+                    <div class="drop-zone" id="drop-zone">
+                        <div class="drop-zone-content">
+                            <div class="upload-icon-wrapper">
+                                <div class="upload-icon-main"><i class="fas fa-cloud-upload-alt"></i></div>
+                                <div class="upload-icon-ring"></div>
+                            </div>
+                            <h3 class="upload-title">Drop your file here</h3>
+                            <p class="upload-text">or <span class="browse-link">browse</span> to upload</p>
+                            <div class="file-types">
+                                <span class="file-badge"><i class="fas fa-file-csv"></i> CSV</span>
+                                <span class="file-badge"><i class="fas fa-file-excel"></i> XLSX</span>
+                            </div>
+                            <input type="file" id="file-input" hidden accept=".csv,.xlsx">
+                        </div>
+                    </div>
+
+                    <div id="progress-system" class="progress-system hidden">
+                        <div class="progress-header">
+                            <span class="progress-label">Analyzing data patterns</span>
+                            <span class="progress-value" id="progress-value">0%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <div class="progress-steps">
+                            <div class="step active" data-step="1">
+                                <div class="step-icon"><i class="fas fa-check"></i></div>
+                                <span>Uploading</span>
+                            </div>
+                            <div class="step" data-step="2">
+                                <div class="step-icon"><i class="fas fa-brain"></i></div>
+                                <span>AI Analysis</span>
+                            </div>
+                            <div class="step" data-step="3">
+                                <div class="step-icon"><i class="fas fa-file-pdf"></i></div>
+                                <span>Generating PDF</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-section">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-bolt"></i></div>
+                            <h3>Instant Analysis</h3>
+                            <p>Get comprehensive insights in under 30 seconds with our optimized AI pipeline.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-chart-line"></i></div>
+                            <h3>Deep Metrics</h3>
+                            <p>Advanced statistical analysis and KPIs extracted automatically from your data.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-file-pdf"></i></div>
+                            <h3>PDF Reports</h3>
+                            <p>Professional downloadable reports with executive-ready formatting.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="results-section" class="results-section hidden">
+                <div class="results-header">
+                    <div class="results-title-group">
+                        <div class="success-indicator"><i class="fas fa-check"></i></div>
+                        <div>
+                            <h2 class="results-title">Analysis Complete</h2>
+                            <p class="results-meta">
+                                <span id="result-rows">0</span> rows •
+                                <span id="result-cols">0</span> columns •
+                                <span id="result-time">Just now</span>
+                            </p>
+                        </div>
+                    </div>
+                    <a href="#" id="download-pdf" class="btn btn-primary">
+                        <i class="fas fa-download"></i> Download PDF Report
+                    </a>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card span-4">
+                        <div class="card-header">
+                            <div class="card-header-icon cyan"><i class="fas fa-clipboard-list"></i></div>
+                            <h3>Executive Summary</h3>
+                        </div>
+                        <div class="card-body">
+                            <p id="exec-summary" class="summary-text"></p>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card span-2">
+                        <div class="card-header">
+                            <div class="card-header-icon blue"><i class="fas fa-chart-pie"></i></div>
+                            <h3>Key Metrics</h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="key-metrics" class="metrics-grid"></div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card span-2">
+                        <div class="card-header">
+                            <div class="card-header-icon purple"><i class="fas fa-lightbulb"></i></div>
+                            <h3>AI Insights</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul id="ai-insights" class="insight-list"></ul>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card span-2">
+                        <div class="card-header">
+                            <div class="card-header-icon green"><i class="fas fa-rocket"></i></div>
+                            <h3>Recommendations</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul id="ai-recs" class="rec-list"></ul>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card span-2">
+                        <div class="card-header">
+                            <div class="card-header-icon pink"><i class="fas fa-exclamation-triangle"></i></div>
+                            <h3>Anomalies & Alerts</h3>
+                        </div>
+                        <div class="card-body">
+                            <ul id="ai-alerts" class="alert-list"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="actions-footer">
+                    <button onclick="resetApp()" class="btn btn-secondary">
+                        <i class="fas fa-redo"></i> Analyze Another File
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="loader" class="loader-overlay hidden">
+        <div class="loader-content">
+            <div class="loader-cube">
+                <div class="loader-cube-face"></div>
+                <div class="loader-cube-face"></div>
+                <div class="loader-cube-face"></div>
+                <div class="loader-cube-face"></div>
+                <div class="loader-cube-face"></div>
+                <div class="loader-cube-face"></div>
+            </div>
+            <p class="loader-title">AI is analyzing your data</p>
+            <p class="loader-subtitle">This may take a few moments...</p>
+            <div class="loader-dots"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
